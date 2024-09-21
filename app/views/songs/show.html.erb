@@ -1,0 +1,53 @@
+<main>
+  <p id="notice"><%= flash[:notice] %></p>
+  <div class='container px-5 px-sm-0'>
+    <div class='row'>
+      <div class='col-md-3'>
+        <%= render 'users/userinfo', user: @user %>
+        <div class='row'>
+            <%= link_to edit_user_path(@user.id), class:"btn btn-outline-secondary btn-block" do %>
+               <i class="fas fa-user-cog"></i>
+            <% end %>
+        </div>
+        <%= render 'songs/newsong', song: @song %>
+      </div>
+<div class='col-md-8 offset-md-1'>
+        <h2>Song detail</h2>
+        <table class='table table-hover table-inverse'>
+          <tbody>
+            <tr>
+            <td>
+            
+            <br>
+            </td>
+            <td><%=link_to @song2.song_name, song_path(@song2.id) %></td>
+            <td><%= @song2.opinion %></td>
+            <% if @user.id==current_user.id %>
+            <td><%=link_to "Edit", edit_song_path(@song2.id) ,class:"btn btn-success"%></td>
+            <td><%=link_to "Destroy", song_path(@song2.id), method: :delete, class:"btn btn-danger" ,data: {confirm: "削除しますか？"} %></td>
+            <% end %>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+        <p>コメント件数：<%= @song2.post_comments.count %></p>
+        <% @song2.post_comments.each do |post_comment| %>
+         <p><%= attachment_image_tag post_comment.user, :profile_image, format: 'jpeg', size: "100x100",fallback: "default-image.jpeg"%></p>
+         <%= post_comment.user.name %>
+         <%= post_comment.created_at.strftime('%Y/%m/%d') %>
+         <%= post_comment.comment %>
+            <% if post_comment.user == current_user %>
+             <div>
+                <%= link_to "削除", song_post_comment_path(post_comment.song, post_comment), method: :delete %>
+             </div>
+            <% end %>
+        <% end %>
+        </div>
+        <div>
+        <%= form_with(model:[@song2, @post_comment], local: true) do |f| %>
+          <%= f.text_area :comment, rows:'3',placeholder: "コメントをここに" %>
+          <%= f.submit "送信する" %>
+        <% end %>
+        </div>
+        
+    </div>

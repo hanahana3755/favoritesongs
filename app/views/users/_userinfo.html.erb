@@ -1,0 +1,15 @@
+<h2>User info</h2>
+        <!-- モックのため、固定値や未実装になっている部分があります。アプリ完成前に修正しましょう。 -->
+        <table class='table'>
+          <tr>
+             <%= attachment_image_tag user, :profile_image, format: 'jpeg', size: "100x100",fallback: "default-image.jpeg"%>
+          </tr>
+          <tr>
+            <th>name</th>
+            <th><%= user.name %></th> 
+          </tr>
+          <tr>
+            <th>introduction</th>
+            <th><%= user.introduction %></th>
+          </tr>
+        </table>

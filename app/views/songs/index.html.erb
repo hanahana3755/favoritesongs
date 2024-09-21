@@ -1,0 +1,51 @@
+<main>
+  <p id="notice"><%= flash[:notice] %></p>
+  <div class='container px-5 px-sm-0'>
+    <div class='row'>
+      <div class='col-md-3'>
+        <%= render 'users/userinfo', user: @user %>
+        <div class='row'>
+          <%= link_to edit_user_path(@user.id), class:"btn btn-outline-secondary btn-block" do %>
+            <i class="fas fa-user-cog"></i>
+          <% end %>
+        </div>
+        <%= render 'songs/newsong', song: @song %>
+      </div>
+      <div class='col-md-8 offset-md-1'>
+        <h2>Songs</h2>
+        <table class='table table-hover table-inverse'>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Song name</th>
+              <th>Opinion</th>
+              <th></th>
+              <th colspan="4"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @songs.each do |song| %>
+            <tr>
+              <td>
+                <%= attachment_image_tag song.user, :profile_image, format: 'jpeg', size: "100x100", fallback: "default-image.jpeg" %>
+              </td>
+              <td><%= link_to song.song_name, song_path(song.id) %></td>
+              <td><%= song.opinion %></td>
+              <td>
+                <%= link_to song_path(song.id) do %>
+                  コメント件数：<%= song.post_comments.count %>
+                <% end %>
+              </td>
+              <td>
+                <%= button_to "いいね", song_favorites_path(song), method: :post %>
+                <%= button_to "いいねを取り消す", song_favorites_path(song), method: :delete if current_user.favorited_songs.include?(song) %>
+                <%= link_to 'いいねしたユーザーを表示', favorites_song_path(song) %>
+              </td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</main>
